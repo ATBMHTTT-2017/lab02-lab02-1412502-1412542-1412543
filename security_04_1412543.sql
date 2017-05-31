@@ -1,11 +1,3 @@
-create table ChiTieu
-(
-  MaChiTieu int primary key,
-  TenChiTieu varchar2(50 char),
-  SoTien int,
-  DuAn char(3)
-);
-
 delete 
 from ChiTieu;
 
