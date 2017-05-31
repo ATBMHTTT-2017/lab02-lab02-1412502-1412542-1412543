@@ -1,9 +1,9 @@
-alter table ChiTieu_1412502_1412542_1412543 add Sign raw(500);
+alter table ChiTieu_1412502_1412542_1412543 add Sign raw(2000);
 
 CREATE OR REPLACE FUNCTION add_signature( Message IN NUMBER, PrivateKey in clob )
 RETURN RAW
 AS
-  signature RAW(500);
+  signature RAW(2000);
 BEGIN
     signature := ORA_RSA.SIGN(message => UTL_I18N.STRING_TO_RAW(Message, 'AL32UTF8'),
     private_key => UTL_RAW.cast_to_raw(PrivateKey),
@@ -29,4 +29,7 @@ BEGIN
        RETURN 'Signature cannot be verified.'; 
     END IF; 
 END;
+
+grant execute on add_signature to r_TruongDuAn;
+grant execute on verify_signature to r_TruongDuAn;
 
