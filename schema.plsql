@@ -1,3 +1,94 @@
+create table NhanVien_1412502_1412542_1412543
+(
+  MaNV char(5) primary key,
+  HoTen varchar2(31 char),
+  DienThoai varchar2(11 char),
+  Email varchar2(50 char),
+  DiaChi varchar2(50 char),
+  Luong int,
+  Phong char(3),
+  ChiNhanh int
+);
+
+
+create table PhongBan_1412502_1412542_1412543
+(
+  MaPhong char(3) primary key,
+  TenPhong varchar2(30 char),
+  TruongPhong char(5),
+  NgayNhanChuc date,
+  SoNhanVien int,
+  ChiNhanh int
+);
+
+create table ChiNhanh_1412502_1412542_1412543
+(
+  MaCN int primary key,
+  TenCN varchar2(30 char),
+  TruongChiNhanh char(5)
+);
+
+create table DuAn_1412502_1412542_1412543
+(
+  MaDA char(3) primary key, 
+  TenDA varchar2(30 char),
+  KinhPhi int,
+  PhongChuTri char(3),
+  TruongDA char(5)
+);
+
+create table PhanCong_1412502_1412542_1412543
+(
+  MaNV char(5) not null,
+  DuAn char(3) not null,
+  VaiTro varchar2(30 char),
+  PhuCap int,
+  constraint PK_PhanCong primary key (MaNV, DuAn)
+);
+
+create table ChiTieu_1412502_1412542_1412543
+(
+  MaChiTieu int primary key,
+  TenChiTieu varchar2(50 char),
+  SoTien int,
+  DuAn char(3)
+);
+
+-- Oracle khong cho update primary key nen khong the cai dat " on update cascade"
+
+alter table NhanVien_1412502_1412542_1412543 add
+  constraint FK_NhanVien_Phong foreign key (Phong) references PhongBan_1412502_1412542_1412543(MaPhong) ON DELETE set null;
+alter table NhanVien_1412502_1412542_1412543 add
+  constraint FK_NhanVien_ChiNhanh foreign key (ChiNhanh) references ChiNhanh_1412502_1412542_1412543(MaCN) on delete set null;
+
+alter table PhongBan_1412502_1412542_1412543 add
+  constraint FK_PhongBan_NhanVien foreign key (TruongPhong) references NhanVien_1412502_1412542_1412543(MaNV) on delete set null;
+alter table PhongBan_1412502_1412542_1412543 add
+  constraint FK_PhongBan_ChiNhanh foreign key (ChiNhanh) references ChiNhanh_1412502_1412542_1412543(MaCN) on delete set null;
+
+alter table ChiNhanh_1412502_1412542_1412543 add
+  constraint FK_ChiNhanh_NhanVien foreign key (TruongChiNhanh) references NhanVien_1412502_1412542_1412543(MaNV) on delete set null;
+  
+alter table DuAn_1412502_1412542_1412543 add
+  constraint FK_DuAn_PhongBan foreign key(PhongChuTri) references PhongBan_1412502_1412542_1412543(MaPhong) on delete set null;
+alter table DuAn_1412502_1412542_1412543 add
+  constraint FK_DuAn_NhanVien foreign key(TruongDA) references NhanVien_1412502_1412542_1412543(MaNV) on delete set null;
+
+alter table PhanCong_1412502_1412542_1412543 add
+  constraint FK_PhanCong_DuAn foreign key (DuAn) references DuAn_1412502_1412542_1412543(MaDA)  on delete cascade;
+alter table ALab1_PhanCong add
+  constraint FK_PhanCong_NhanVien foreign key (MaNV) references NhanVien_1412502_1412542_1412543(MaNV)  on delete cascade;
+  
+alter table ChiTieu_1412502_1412542_1412543 add
+  constraint FK_ChiTieu_DuAn foreign key (DuAn) references DuAn_1412502_1412542_1412543(MaDA) on delete cascade;
+
+
+
+
+
+
+
+
 insert into ChiNhanh_1412502_1412542_1412543 values(1, 'Main branch', null); 
 insert into ChiNhanh_1412502_1412542_1412543 values(2, 'TP Ho Chi Minh', null);
 insert into ChiNhanh_1412502_1412542_1412543 values(3, 'Da Nang', null);
